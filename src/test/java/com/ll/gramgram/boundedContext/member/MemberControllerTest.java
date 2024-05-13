@@ -1,5 +1,6 @@
 package com.ll.gramgram.boundedContext.member;
 
+import com.ll.gramgram.boundedContext.member.controller.MemberController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.ll.gramgram.boundedContext.member;
+package com.ll.gramgram.boundedContext.member.controller;
 
 
 import com.ll.gramgram.boundedContext.member.form.JoinForm;
