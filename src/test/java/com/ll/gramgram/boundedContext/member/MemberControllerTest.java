@@ -73,8 +73,6 @@ class MemberControllerTest {
         Member member = memberService.findByUsername("user10").orElse(null);
 
         assertThat(member).isNotNull();
-
-
     }
 
 }
