@@ -1,6 +1,9 @@
 package com.ll.gramgram.boundedContext.member;
 
 import com.ll.gramgram.boundedContext.member.controller.MemberController;
+import com.ll.gramgram.boundedContext.member.entity.Member;
+import com.ll.gramgram.boundedContext.member.service.MemberService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -28,6 +32,9 @@ class MemberControllerTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @Autowired
+    private MemberService memberService;
 
     @Test
     @DisplayName("회원가입 폼")
@@ -62,6 +69,10 @@ class MemberControllerTest {
         resultActions.andExpect(handler().handlerType(MemberController.class))
                 .andExpect(handler().methodName("join"))
                 .andExpect(status().is3xxRedirection());
+
+        Member member = memberService.findByUsername("user10").orElse(null);
+
+        assertThat(member).isNotNull();
 
 
     }
