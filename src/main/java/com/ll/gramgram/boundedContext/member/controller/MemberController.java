@@ -1,18 +1,19 @@
 package com.ll.gramgram.boundedContext.member.controller;
 
 
+import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.form.JoinForm;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.security.Principal;
 
 @Controller
 @RequestMapping("/member")
@@ -35,5 +36,14 @@ public class MemberController {
     @GetMapping("/login")
     public String login() {
         return "user/member/login";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/me")
+    public String me(Model model, Principal principal) {
+        Member member = memberService.findByUsername(principal.getName()).orElseThrow();
+
+        model.addAttribute("member", member);
+        return "user/member/me";
     }
 }
