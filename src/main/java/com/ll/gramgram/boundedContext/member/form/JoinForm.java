@@ -16,4 +16,5 @@ public class JoinForm {
     @NotBlank
     @Size(min = 4, max = 30)
     private final String password;
+
 }
