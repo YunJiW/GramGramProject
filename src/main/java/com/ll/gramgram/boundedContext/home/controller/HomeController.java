@@ -12,14 +12,19 @@ import java.util.Enumeration;
 @RequiredArgsConstructor
 public class HomeController {
 
+    @GetMapping("/")
+    public String showMain() {
+        return "home/main";
+    }
+
     @GetMapping("/debugSession")
     @ResponseBody
-    public String showDebugSession(HttpSession session){
+    public String showDebugSession(HttpSession session) {
         StringBuilder sb = new StringBuilder("Session content \n");
 
         Enumeration<String> attributeNames = session.getAttributeNames();
 
-        while(attributeNames.hasMoreElements()){
+        while (attributeNames.hasMoreElements()) {
             String attributeName = attributeNames.nextElement();
 
             Object attributeValue = session.getAttribute(attributeName);
