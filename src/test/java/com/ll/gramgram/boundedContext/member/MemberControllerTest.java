@@ -3,7 +3,6 @@ package com.ll.gramgram.boundedContext.member;
 import com.ll.gramgram.boundedContext.member.controller.MemberController;
 import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +72,20 @@ class MemberControllerTest {
         Member member = memberService.findByUsername("user10").orElse(null);
 
         assertThat(member).isNotNull();
+    }
+
+    @Test
+    @DisplayName("로그인 처리")
+    void t3() throws Exception {
+
+        ResultActions resultActions = mvc.perform(post("/member/login")
+                        .with(csrf())
+                        .param("username", "admin")
+                        .param("password", "1234"))
+                .andDo(print());
+
+        resultActions.andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/**"));
     }
 
 }

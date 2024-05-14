@@ -4,6 +4,10 @@ package com.ll.gramgram.boundedContext.member.controller;
 import com.ll.gramgram.boundedContext.member.form.JoinForm;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +21,6 @@ public class MemberController {
 
     private final MemberService memberService;
 
-
     @GetMapping("/join")
     public String join() {
         return "user/member/join";
@@ -27,5 +30,10 @@ public class MemberController {
     public String join(@Valid JoinForm joinForm) {
         memberService.join(joinForm.getUsername(), joinForm.getPassword());
         return "redirect:/";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "user/member/login";
     }
 }
