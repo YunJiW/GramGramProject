@@ -80,7 +80,7 @@ class MemberControllerTest {
 
         ResultActions resultActions = mvc.perform(post("/member/login")
                         .with(csrf())
-                        .param("username", "user10")
+                        .param("username", "admin")
                         .param("password", "1234"))
                 .andDo(print());
 
