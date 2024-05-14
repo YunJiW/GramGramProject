@@ -40,10 +40,7 @@ public class MemberController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/me")
-    public String me(Model model, Principal principal) {
-        Member member = memberService.findByUsername(principal.getName()).orElseThrow();
-
-        model.addAttribute("member", member);
+    public String me() {
         return "user/member/me";
     }
 }
