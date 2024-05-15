@@ -1,6 +1,8 @@
 package com.ll.gramgram.boundedContext.member.controller;
 
 
+import com.ll.gramgram.base.rsData.RsData;
+import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.form.JoinForm;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
 import com.ll.gramgram.standard.util.Ut;
@@ -26,8 +28,13 @@ public class MemberController {
 
     @PostMapping("/join")
     public String join(@Valid JoinForm joinForm) {
-        memberService.join(joinForm.getUsername(), joinForm.getPassword());
-        return "redirect:/member/login?msg=" + Ut.url.encode("회원가입이완료되었습니다.\n 로그인 후 이용해주세요.");
+        RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword());
+
+        if (joinRs.isFail()) {
+            return "common/js";
+        }
+        String msg = joinRs.getMsg() + "\n 로그인 후 이용해주세요.";
+        return "redirect:/member/login?msg=" + Ut.url.encode(msg);
     }
 
     @GetMapping("/login")
