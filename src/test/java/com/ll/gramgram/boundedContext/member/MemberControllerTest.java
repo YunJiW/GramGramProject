@@ -61,13 +61,14 @@ class MemberControllerTest {
 
         ResultActions resultActions = mvc.perform(post("/member/join")
                         .with(csrf())
-                        .param("username", "user10")
+                        .param("username", "user102")
                         .param("password", "1234"))
                 .andDo(print());
 
         resultActions.andExpect(handler().handlerType(MemberController.class))
                 .andExpect(handler().methodName("join"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/member/login?msg=**"));
 
         Member member = memberService.findByUsername("user10").orElse(null);
 
