@@ -58,4 +58,12 @@ public class Rq {
         }
         return member;
     }
+
+    public String historyBack(String msg) {
+        String referer = req.getHeader("referer");
+        String key = "historyBackErrorMsg___" + referer;
+        req.setAttribute("localStorageKeyAboutHistoryBackErrorMsg", key);
+        req.setAttribute("historyBackErrorMsg", msg);
+        return "common/js";
+    }
 }
