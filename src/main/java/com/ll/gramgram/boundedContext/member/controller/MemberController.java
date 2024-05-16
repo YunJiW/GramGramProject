@@ -9,6 +9,7 @@ import com.ll.gramgram.boundedContext.member.service.MemberService;
 import com.ll.gramgram.standard.util.Ut;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
 
     private final MemberService memberService;
@@ -34,6 +36,8 @@ public class MemberController {
         RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword());
 
         if (joinRs.isFail()) {
+            log.info("해당 아이디가 존재 = {}", joinRs.getMsg());
+
             return rq.historyBack(joinRs.getMsg());
         }
         String msg = joinRs.getMsg() + "\n 로그인 후 이용해주세요.";
