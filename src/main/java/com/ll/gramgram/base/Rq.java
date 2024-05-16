@@ -58,4 +58,9 @@ public class Rq {
         }
         return member;
     }
+
+    public String historyBack(String msg) {
+        req.setAttribute("alertMsg", msg);
+        return "common/js";
+    }
 }
