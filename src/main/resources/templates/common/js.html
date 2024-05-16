@@ -1,9 +1,16 @@
 <script th:inline="javascript">
-    const alertMsg = /*[[${alertMsg}]]*/ null;
+    const localStorageKeyAboutHistoryBackMsg = /*[[${localStorageKeyAboutHistoryBackMsg}]]*/ null;
+    const historyBackMsg = /*[[${historyBackMsg}]]*/ null;
 
-    if (alertMsg && alertMsg.trim().length > 0) {
-        alert(alertMsg.trim());
+    if (localStorageKeyAboutHistoryBackMsg && localStorageKeyAboutHistoryBackMsg.trim().length > 0) {
+        localStorage.setItem(localStorageKeyAboutHistoryBackMsg, historyBackMsg);
     }
-    history.back();
+
+    // 에러 메세지
+    const localStorageKeyAboutHistoryBackErrorMsg = /*[[${localStorageKeyAboutHistoryBackErrorMsg}]]*/ null;
+    const historyBackErrorMsg = /*[[${historyBackErrorMsg}]]*/ null;
+
+    if (localStorageKeyAboutHistoryBackErrorMsg && localStorageKeyAboutHistoryBackErrorMsg.trim().length > 0) {
+        localStorage.setItem(localStorageKeyAboutHistoryBackErrorMsg, historyBackErrorMsg);
 
 </script>
