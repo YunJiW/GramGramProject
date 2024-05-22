@@ -31,7 +31,7 @@ public class InstaMemberService {
 
     }
 
-    private Optional<InstaMember> findByUsername(String username) {
+    public Optional<InstaMember> findByUsername(String username) {
         return instaMemberRepository.findByUsername(username);
     }
 
