@@ -1,4 +1,4 @@
-package com.ll.gramgram.boundedContext.instaMember.repository;
+package com.ll.gramgram.boundedContext.instaMember.controller;
 
 
 import com.ll.gramgram.base.Rq;
