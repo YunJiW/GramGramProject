@@ -4,6 +4,7 @@ import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.instaMember.repository.InstaMemberRepository;
 import com.ll.gramgram.boundedContext.member.entity.Member;
+import com.ll.gramgram.boundedContext.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,8 @@ public class InstaMemberService {
 
     private final InstaMemberRepository instaMemberRepository;
 
+    private final MemberService memberService;
+
     @Transactional
     public RsData<InstaMember> connect(Member member, String username, String gender) {
         if (findByUsername(username).isPresent()) {
@@ -25,8 +28,7 @@ public class InstaMemberService {
 
         RsData<InstaMember> instaMemberRsData = create(username, gender);
 
-        member.addInstaMember(instaMemberRsData.getData());
-
+        memberService.UpdateInstaMember(member, instaMemberRsData.getData());
         return instaMemberRsData;
 
     }

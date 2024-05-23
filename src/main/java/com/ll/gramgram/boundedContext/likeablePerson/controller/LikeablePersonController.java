@@ -27,12 +27,17 @@ public class LikeablePersonController {
 
     @PostMapping("/add")
     public String add(@Valid AddForm addForm) {
-        RsData<LikeablePerson> createRsData = likeablePersonService.create(rq.getMember(), addForm.getUsername(), addForm.getAttractiveType());
+        RsData<LikeablePerson> createRsData = likeablePersonService.create(rq.getMember(), addForm.getUsername(), addForm.getAttractiveTypeCode());
 
         if (createRsData.isFail()) {
             return rq.historyBack(createRsData);
         }
 
         return rq.redirectWithMsg("/likeablePerson/list", createRsData);
+    }
+
+    @GetMapping("/list")
+    public String list(){
+        return "/user/likeablePerson/list";
     }
 }

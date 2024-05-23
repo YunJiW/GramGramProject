@@ -26,8 +26,9 @@ public class LikeablePersonService {
             return RsData.of("F-1", "본인은 호감상대로 저장할 수 없습니다.");
         }
 
-        LikeablePerson likeablePerson = LikeablePerson.builder().fromInstaMember(member.getInstaMember())
-                .fromInstaMemberUsername(member.getUsername())
+        LikeablePerson likeablePerson = LikeablePerson.builder()
+                .fromInstaMember(member.getInstaMember())
+                .fromInstaMemberUsername(member.getInstaMember().getUsername())
                 .toInstaMember(toInstaMember)
                 .toInstaMemberUsername(toInstaMember.getUsername())
                 .attractiveTypeCode(attractiveTypeCode)

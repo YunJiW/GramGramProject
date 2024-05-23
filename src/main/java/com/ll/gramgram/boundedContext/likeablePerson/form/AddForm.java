@@ -8,5 +8,5 @@ import lombok.Getter;
 public class AddForm {
 
     private final String username;
-    private final int attractiveType;
+    private final int attractiveTypeCode;
 }
