@@ -53,8 +53,12 @@ public class Member {
         return grantedAuthorities;
     }
 
-    public void addInstaMember(InstaMember instaMember){
+    public void addInstaMember(InstaMember instaMember) {
         this.instaMember = instaMember;
+    }
+
+    public boolean hasConnectedInstaMember() {
+        return instaMember != null;
     }
 
 
