@@ -64,4 +64,22 @@ class LikeablePersonControllerTest {
                 .andExpect(status().is3xxRedirection());
         ;
     }
+    
+    @Test
+    @DisplayName("user2가 등록이 아직안된 abcd라는 유저에게 호감표시")
+    @WithUserDetails("user2")
+    void t004() throws Exception{
+        ResultActions resultActions = mvc
+                .perform(post("/likeablePerson/add")
+                        .with(csrf()) // CSRF 키 생성
+                        .param("username", "abcd")
+                        .param("attractiveTypeCode", "1")
+                )
+                .andDo(print());
+
+        resultActions
+                .andExpect(handler().handlerType(LikeablePersonController.class))
+                .andExpect(handler().methodName("add"))
+                .andExpect(status().is3xxRedirection());
+    }
 }

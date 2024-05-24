@@ -29,11 +29,11 @@ public class LikeablePerson {
     @LastModifiedDate
     private LocalDateTime modifyDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private InstaMember fromInstaMember;
     private String fromInstaMemberUsername;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private InstaMember toInstaMember;
 
     private String toInstaMemberUsername;
