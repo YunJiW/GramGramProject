@@ -19,7 +19,7 @@ public class LikeablePersonService {
 
     private final InstaMemberService instaMemberService;
 
-    public RsData<LikeablePerson> create(Member member, String username, int attractiveTypeCode) {
+    public RsData<LikeablePerson> like(Member member, String username, int attractiveTypeCode) {
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username);
 
         if (member.getInstaMember().getUsername().equals(username)) {
