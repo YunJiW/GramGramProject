@@ -20,7 +20,7 @@ public class LikeablePersonService {
     private final InstaMemberService instaMemberService;
 
     public RsData<LikeablePerson> create(Member member, String username, int attractiveTypeCode) {
-        InstaMember toInstaMember = instaMemberService.findByUsername(username).orElseThrow();
+        InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username);
 
         if (member.getInstaMember().getUsername().equals(username)) {
             return RsData.of("F-1", "본인은 호감상대로 저장할 수 없습니다.");

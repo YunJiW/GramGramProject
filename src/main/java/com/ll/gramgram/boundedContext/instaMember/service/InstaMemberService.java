@@ -33,6 +33,17 @@ public class InstaMemberService {
 
     }
 
+    @Transactional
+    public InstaMember findByUsernameOrCreate(String username) {
+        Optional<InstaMember> opInstaMember = findByUsername(username);
+
+        if (opInstaMember.isPresent()) {
+            return opInstaMember.get();
+        }
+
+        return create(username, "U").getData();
+    }
+
     public Optional<InstaMember> findByUsername(String username) {
         return instaMemberRepository.findByUsername(username);
     }
