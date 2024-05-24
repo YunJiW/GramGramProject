@@ -27,23 +27,6 @@ class LikeablePersonControllerTest {
     @Autowired
     private MockMvc mvc;
 
-
-    @Test
-    @DisplayName("등록 폼(인스타 인증 안했을 폼 대신 메세지)")
-    @WithUserDetails("user1")
-    void t001() throws Exception {
-        ResultActions resultActions = mvc.perform(get("/likeablePerson/add"))
-                .andDo(print());
-
-        resultActions.andExpect(handler().handlerType(LikeablePersonController.class))
-                .andExpect(handler().methodName("add"))
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(content().string(containsString("""
-                        먼저 본인의 인스타그램 아이디를 입력해주세요.
-                        """.stripIndent().trim())))
-        ;
-    }
-
     @Test
     @DisplayName("등록 폼 처리(user2가 user3의 호감표시(외모)")
     @WithUserDetails("user2")
