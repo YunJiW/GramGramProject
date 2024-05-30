@@ -28,11 +28,12 @@ public class JasyptConfigDES {
         config.setPoolSize("1");
         config.setProviderName("SunJCE");
         config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
-        config.setIvGeneratorClassName("org.jasypt.iv.RandomIvGenerator");
+        config.setIvGeneratorClassName("org.jasypt.iv.NoIvGenerator");
         config.setStringOutputType("base64");
         encryptor.setConfig(config);
 
         return encryptor;
 
     }
+
 }

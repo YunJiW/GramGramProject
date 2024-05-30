@@ -7,8 +7,25 @@ spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://127.0.0.1:3306/gram__dev?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
-    username: root
+    username: ENC(E8j+omYmwIRxZGTR06Q9rA==)
     password:
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            clientId: ENC(5Smj2F6HHrHlnBj/SmAZNand+/JDenm+Zdbr85voauzX07zOA0NuAI3Y0FTDEbDU)
+            scope:
+            client-name: Kakao
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            client-authentication-method: POST
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
   jpa:
     hibernate:
       ddl-auto: create
@@ -29,4 +46,4 @@ logging:
 
 jasypt:
   encryptor:
-    bean : jasyptStringEncryptor
+    bean: jasyptStringEncryptor
