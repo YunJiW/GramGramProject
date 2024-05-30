@@ -29,10 +29,14 @@ public class Member {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+
+    private String ProviderTypeCode;
     @Column(unique = true)
     private String username;
 
     private String password;
+
+
 
     @CreatedDate
     private LocalDateTime createDate;
