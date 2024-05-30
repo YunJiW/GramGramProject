@@ -25,3 +25,8 @@ logging:
     com.ll.gramgram_ai: DEBUG
     org.hibernate.orm.jdbc.bind: TRACE
     org.hibernate.orm.jdbc.extract: TRACE
+
+
+jasypt:
+  encryptor:
+    bean : jasyptStringEncryptor
