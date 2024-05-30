@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -38,5 +40,19 @@ public class LikeablePersonService {
 
         return RsData.of("S-1", "입력하신 인스타 유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
 
+    }
+
+    @Transactional
+    public RsData<LikeablePerson> deleteLikeablePerson(LikeablePerson likeablePerson) {
+        String tolikeablePersonUsername = likeablePerson.getToInstaMember().getUsername();
+
+        likeablePersonRepository.delete(likeablePerson);
+
+        return RsData.of("S-1", "%s 님을 호감 취소하엿습니다.".formatted(tolikeablePersonUsername));
+    }
+
+    public Optional<LikeablePerson> findById(Long id) {
+
+        return likeablePersonRepository.findById(id);
     }
 }

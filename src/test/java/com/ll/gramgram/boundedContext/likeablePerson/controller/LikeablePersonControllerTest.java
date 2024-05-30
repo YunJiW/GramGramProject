@@ -111,4 +111,20 @@ class LikeablePersonControllerTest {
                         """.stripIndent().trim())));
         ;
     }
+
+    @Test
+    @DisplayName("호감 취소")
+    @WithUserDetails("user3")
+    void t006() throws Exception{
+
+        ResultActions resultActions = mvc
+                .perform(get("/likeablePerson/delete/1"))
+                .andDo(print());
+
+        resultActions
+                .andExpect(handler().handlerType(LikeablePersonController.class))
+                .andExpect(handler().methodName("deletelike"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/likeablePerson/list**"));
+    }
 }
