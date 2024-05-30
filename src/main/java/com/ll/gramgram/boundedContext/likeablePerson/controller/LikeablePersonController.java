@@ -59,7 +59,7 @@ public class LikeablePersonController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("delete/{id}")
+    @PostMapping("delete/{id}")
     public String deletelike(@PathVariable("id") Long id) {
 
         log.info("삭제 판별");
