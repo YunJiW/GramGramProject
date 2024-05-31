@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.LazyCollection;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -39,13 +38,29 @@ public class InstaMember {
     private LocalDateTime modifyDate;
 
 
-    @OneToMany(mappedBy = "fromInstaMember",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fromInstaMember", cascade = CascadeType.ALL)
     @OrderBy("id desc")
     @Builder.Default
     private List<LikeablePerson> fromLikeablePeople = new ArrayList<>();
 
-    @OneToMany(mappedBy = "toInstaMember",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "toInstaMember", cascade = CascadeType.ALL)
     @OrderBy("id desc")
     @Builder.Default
     private List<LikeablePerson> toLikeablePeople = new ArrayList<>();
+
+    public void addFromLikeablePerson(LikeablePerson likeablePerson) {
+        fromLikeablePeople.add(0, likeablePerson);
+    }
+
+    public void addToLikeablePerson(LikeablePerson likeablePerson) {
+        toLikeablePeople.add(0, likeablePerson);
+    }
+
+    public void removeFromLikeablePerson(LikeablePerson likeablePerson) {
+        fromLikeablePeople.removeIf(e -> e.equals(likeablePerson));
+    }
+
+    public void removeToLikeablePerson(LikeablePerson likeablePerson) {
+        toLikeablePeople.removeIf(e -> e.equals(likeablePerson));
+    }
 }

@@ -25,6 +25,7 @@ public class LikeablePersonService {
     private final InstaMemberService instaMemberService;
 
     public RsData<LikeablePerson> like(Member member, String username, int attractiveTypeCode) {
+        InstaMember fromInstaMember = member.getInstaMember();
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username);
 
         if (member.getInstaMember().getUsername().equals(username)) {
@@ -32,14 +33,18 @@ public class LikeablePersonService {
         }
 
         LikeablePerson likeablePerson = LikeablePerson.builder()
-                .fromInstaMember(member.getInstaMember())
-                .fromInstaMemberUsername(member.getInstaMember().getUsername())
+                .fromInstaMember(fromInstaMember)
+                .fromInstaMemberUsername(fromInstaMember.getUsername())
                 .toInstaMember(toInstaMember)
                 .toInstaMemberUsername(toInstaMember.getUsername())
                 .attractiveTypeCode(attractiveTypeCode)
                 .build();
 
         likeablePersonRepository.save(likeablePerson);
+
+        fromInstaMember.addFromLikeablePerson(likeablePerson);
+        toInstaMember.addToLikeablePerson(likeablePerson);
+
 
         return RsData.of("S-1", "입력하신 인스타 유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
 
@@ -60,6 +65,9 @@ public class LikeablePersonService {
         String tolikeablePersonUsername = likeablePerson.getToInstaMember().getUsername();
 
         likeablePersonRepository.delete(likeablePerson);
+
+        likeablePerson.getFromInstaMember().removeFromLikeablePerson(likeablePerson);
+        likeablePerson.getToInstaMember().removeToLikeablePerson(likeablePerson);
 
         return RsData.of("S-1", "%s 님을 호감 취소하엿습니다.".formatted(tolikeablePersonUsername));
     }
