@@ -118,7 +118,9 @@ class LikeablePersonControllerTest {
     void t006() throws Exception{
 
         ResultActions resultActions = mvc
-                .perform(get("/likeablePerson/delete/1"))
+                .perform(post("/likeablePerson/delete/1")
+                        .with(csrf()))
+
                 .andDo(print());
 
         resultActions
