@@ -39,6 +39,7 @@ public class LikeablePersonController {
         RsData<LikeablePerson> createRsData = likeablePersonService.like(rq.getMember(), addForm.getUsername(), addForm.getAttractiveTypeCode());
 
         if (createRsData.isFail()) {
+            log.info("호감표시 실패");
             return rq.historyBack(createRsData);
         }
 

@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -32,6 +33,11 @@ public class LikeablePersonService {
             return RsData.of("F-1", "본인은 호감상대로 저장할 수 없습니다.");
         }
 
+        if (!canLike(fromInstaMember, toInstaMember)) {
+            log.info("중복 호감 표시");
+            return RsData.of("F-1", "이미 호감을 표시한 상대입니다.");
+        }
+
         LikeablePerson likeablePerson = LikeablePerson.builder()
                 .fromInstaMember(fromInstaMember)
                 .fromInstaMemberUsername(fromInstaMember.getUsername())
@@ -47,6 +53,22 @@ public class LikeablePersonService {
 
 
         return RsData.of("S-1", "입력하신 인스타 유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
+
+    }
+
+    private boolean canLike(InstaMember fromInstaMember, InstaMember toInstaMember) {
+        List<LikeablePerson> fromLikeablePeople = fromInstaMember.getFromLikeablePeople();
+
+        LikeablePerson likeablePerson = fromLikeablePeople.stream()
+                .filter(e -> e.getToInstaMember().getUsername().equals(toInstaMember.getUsername()))
+                .findFirst()
+                .orElse(null);
+
+        if (likeablePerson != null) {
+            return false;
+        }
+
+        return true;
 
     }
 
