@@ -7,14 +7,17 @@ import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.ll.gramgram.boundedContext.likeablePerson.repository.LikeablePersonRepository;
 import com.ll.gramgram.boundedContext.member.entity.Member;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class LikeablePersonService {
 
     private final LikeablePersonRepository likeablePersonRepository;
@@ -43,7 +46,17 @@ public class LikeablePersonService {
     }
 
     @Transactional
-    public RsData<LikeablePerson> deleteLikeablePerson(LikeablePerson likeablePerson) {
+    public RsData deleteLikeablePerson(InstaMember instaMember, Long id) {
+        LikeablePerson likeablePerson = findById(id).orElse(null);
+
+        if (likeablePerson == null) {
+            return RsData.of("F-1", "취소된 호감 대상입니다.");
+        }
+
+        if (!Objects.equals(instaMember.getId(), likeablePerson.getFromInstaMember().getId())) {
+            log.info("권한이 없습니다.");
+            return RsData.of("F-1", "권한이 없습니다.");
+        }
         String tolikeablePersonUsername = likeablePerson.getToInstaMember().getUsername();
 
         likeablePersonRepository.delete(likeablePerson);

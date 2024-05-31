@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -62,28 +61,13 @@ public class LikeablePersonController {
     @PostMapping("delete/{id}")
     public String deletelike(@PathVariable("id") Long id) {
 
-        log.info("삭제 판별");
-
-        LikeablePerson likeablePerson = likeablePersonService.findById(id).orElse(null);
-
-        if (likeablePerson == null) {
-            log.info("취소된 호감 대상입니다.");
-            return rq.historyBack("이미 취소된 호감대상입니다.");
-        }
-
-        if (!Objects.equals(rq.getMember().getInstaMember().getId(), likeablePerson.getFromInstaMember().getId())) {
-            log.info("권한이 없습니다.");
-            return rq.historyBack("권한 없음");
-        }
-
-
-        log.info("삭제 가능");
-        RsData<LikeablePerson> rsData = likeablePersonService.deleteLikeablePerson(likeablePerson);
+        RsData rsData = likeablePersonService.deleteLikeablePerson(rq.getMember().getInstaMember(), id);
 
         if (rsData.isFail()) {
-            log.info("실패");
+            log.info("삭제 불가능");
             return rq.historyBack(rsData.getMsg());
         }
+
 
         log.info("삭제 완료");
         return rq.redirectWithMsg("/likeablePerson/list", rsData.getMsg());
