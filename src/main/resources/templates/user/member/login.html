@@ -3,22 +3,44 @@
     <title>로그인</title>
 </head>
 
-<main layout:fragment="main">
-    <form th:action method="POST" class="p-10 flex flex-col gap-4" onsubmit="loginForm__submit(this); return false;">
-        <div>
-            <input type="text" name="username" placeholder="아이디" class="input input-bordered">
-        </div>
-        <div>
-            <input type="password" name="password" placeholder="비밀번호" class="input input-bordered">
-        </div>
-        <div>
-            <input type="submit" value="로그인" class="btn btn-primary">
-        </div>
-    </form>
+<main layout:fragment="main" class="flex-grow flex items-center justify-center">
+    <div class="max-w-2xl w-full px-4">
+        <h1 class="mb-4">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            로그인
+        </h1>
 
-    <div>
-        <a class="btn btn-link" href="/oauth2/authorization/kakao">카카오 로그인</a>
-    </div>
+        <form th:action method="POST" class="flex flex-col gap-6" onsubmit="LoginForm__submit(this); return false;">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">아이디</span>
+                </label>
+                <input type="text" name="username" placeholder="아이디" class="input input-bordered" autofocus/>
+            </div>
+
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">비빌번호</span>
+                </label>
+                <input type="password" name="password" placeholder="비빌번호" class="input input-bordered"/>
+            </div>
+
+            <button id="btn-login-1" class="btn btn-block btn-primary gap-1">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                <span>로그인</span>
+            </button>
+
+            <a href="/oauth2/authorization/kakao" class="btn btn-block btn-outline gap-1">
+                <i class="fa-solid fa-comment text-[color:#ffe812]"></i>
+                <span>카카오 로그인</span>
+            </a>
+
+            <div class="flex flex-wrap justify-center">
+                <a href="/member/join" class="btn btn-link">회원가입</a>
+                <a href="#" class="btn btn-link">아이디찾기</a>
+                <a href="#" class="btn btn-link">비밀번호찾기</a>
+            </div>
+        </form>
 
     <script>
 function loginForm__submit(form){

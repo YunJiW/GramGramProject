@@ -57,6 +57,7 @@ public class Member {
         return grantedAuthorities;
     }
 
+
     public void addInstaMember(InstaMember instaMember) {
         this.instaMember = instaMember;
     }
@@ -65,5 +66,8 @@ public class Member {
         return instaMember != null;
     }
 
+    public String getNickname() {
+        return "%04d".formatted(getId());
+    }
 
 }
