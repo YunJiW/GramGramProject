@@ -44,7 +44,7 @@
                             </div>
 
                             <div class="card-actions justify-end">
-                                <a class="btn btn-sm btn-outline">호감사유 변경</a>
+                                <a th:href="@{|modify/${likeablePerson.id}|}" class="btn btn-sm btn-outline">호감사유 변경</a>
                                 <a class="btn btn-sm btn-outline" href="javascript:;"
                                    onclick="if ( confirm('정말로 취소하시겠습니까?') ) $(this).next().submit();">호감취소</a>
                                 <form hidden th:action="@{|/likeablePerson/delete/${likeablePerson.id}|}" method="POST">

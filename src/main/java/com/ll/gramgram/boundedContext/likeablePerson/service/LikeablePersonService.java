@@ -84,7 +84,7 @@ public class LikeablePersonService {
                 .orElse(null);
 
         if (likeablePerson != null) {
-                return likeablePerson;
+            return likeablePerson;
         }
 
         return null;
@@ -116,5 +116,40 @@ public class LikeablePersonService {
     public Optional<LikeablePerson> findById(Long id) {
 
         return likeablePersonRepository.findById(id);
+    }
+
+    @Transactional
+    public RsData modifyLike(Member member, Long id, int attractiveTypeCode) {
+
+        LikeablePerson likeablePerson = likeablePersonRepository.findById(id).orElseThrow();
+
+        RsData rsData = canModifyLike(member, likeablePerson);
+
+        if (rsData.isFail()) {
+            return rsData;
+        }
+
+        likeablePerson.modifyAttractiveTypCode(attractiveTypeCode);
+
+
+        return RsData.of("S-2", "호감 사유 수정이 완료되었습니다.");
+
+
+    }
+
+    public RsData canModifyLike(Member member, LikeablePerson likeablePerson) {
+        if (!member.hasConnectedInstaMember()) {
+            return RsData.of("F-1", "먼저 본인의 인스타그램 아이디를 입력해주세요.");
+        }
+
+        InstaMember fromInstaMember = member.getInstaMember();
+
+        if (!Objects.equals(fromInstaMember.getId(), likeablePerson.getFromInstaMember().getId())) {
+            log.info("권한이 없습니다.");
+            return RsData.of("F-1", "권한이 없습니다.");
+        }
+
+
+        return RsData.of("S-1", "수정 가능");
     }
 }

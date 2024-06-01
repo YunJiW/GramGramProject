@@ -5,6 +5,7 @@ import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.ll.gramgram.boundedContext.likeablePerson.form.AddForm;
+import com.ll.gramgram.boundedContext.likeablePerson.form.ModifyForm;
 import com.ll.gramgram.boundedContext.likeablePerson.service.LikeablePersonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -72,5 +73,35 @@ public class LikeablePersonController {
 
         log.info("삭제 완료");
         return rq.redirectWithMsg("/likeablePerson/list", rsData.getMsg());
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify/{id}")
+    public String modify(@PathVariable("id") Long id, Model model) {
+        LikeablePerson likeablePerson = likeablePersonService.findById(id).orElseThrow();
+
+        RsData modifyLikeData = likeablePersonService.canModifyLike(rq.getMember(), likeablePerson);
+
+        if (modifyLikeData.isFail()) {
+            rq.historyBack(modifyLikeData.getMsg());
+        }
+
+        model.addAttribute("likeablePerson", likeablePerson);
+
+        return "/user/likeablePerson/modify";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("modify/{id}")
+    public String modifyLike(@PathVariable("id") Long id, @Valid ModifyForm modifyForm) {
+
+        RsData likeData = likeablePersonService.modifyLike(rq.getMember(), id, modifyForm.getAttractiveTypeCode());
+
+        if (likeData.isFail()) {
+            return rq.historyBack(likeData.getMsg());
+        }
+
+        return rq.redirectWithMsg("/likeablePerson/list", likeData.getMsg());
+
     }
 }
