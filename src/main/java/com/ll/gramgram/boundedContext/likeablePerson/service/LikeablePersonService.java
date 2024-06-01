@@ -26,6 +26,7 @@ public class LikeablePersonService {
 
     private final InstaMemberService instaMemberService;
 
+    @Transactional
     public RsData<LikeablePerson> like(Member member, String username, int attractiveTypeCode) {
         InstaMember fromInstaMember = member.getInstaMember();
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username);
@@ -34,14 +35,21 @@ public class LikeablePersonService {
             return RsData.of("F-1", "본인은 호감상대로 저장할 수 없습니다.");
         }
 
-        if(fromInstaMember.getFromLikeablePeople().size() >= AppConfig.getLikeablePersonFromMax()){
-            return RsData.of("F-1","%d명 이상에게 호감을 표시할 수 없습니다.".formatted(AppConfig.getLikeablePersonFromMax()));
+        if (!LikeSizeCheck(fromInstaMember)) {
+            return RsData.of("F-1", "%d명 이상에게 호감을 표시할 수 없습니다.".formatted(AppConfig.getLikeablePersonFromMax()));
 
         }
+        LikeablePerson searchLikeablePerson = canLike(fromInstaMember, toInstaMember);
+        if (searchLikeablePerson != null) {
+            if (searchLikeablePerson.getAttractiveTypeCode() == attractiveTypeCode) {
+                log.info("중복 호감 표시");
+                return RsData.of("F-1", "이미 호감을 표시한 상대입니다.");
+            }
 
-        if (!canLike(fromInstaMember, toInstaMember)) {
-            log.info("중복 호감 표시");
-            return RsData.of("F-1", "이미 호감을 표시한 상대입니다.");
+            searchLikeablePerson.modifyAttractiveTypCode(attractiveTypeCode);
+            return RsData.of("S-2", "호감 수정 완료");
+
+
         }
 
         LikeablePerson likeablePerson = LikeablePerson.builder()
@@ -62,19 +70,24 @@ public class LikeablePersonService {
 
     }
 
-    private boolean canLike(InstaMember fromInstaMember, InstaMember toInstaMember) {
+    private static boolean LikeSizeCheck(InstaMember fromInstaMember) {
+        return fromInstaMember.getFromLikeablePeople().size() <= AppConfig.getLikeablePersonFromMax();
+    }
+
+    private LikeablePerson canLike(InstaMember fromInstaMember, InstaMember toInstaMember) {
         List<LikeablePerson> fromLikeablePeople = fromInstaMember.getFromLikeablePeople();
 
+        //호감 표시를 한적이 있는지.
         LikeablePerson likeablePerson = fromLikeablePeople.stream()
                 .filter(e -> e.getToInstaMember().getUsername().equals(toInstaMember.getUsername()))
                 .findFirst()
                 .orElse(null);
 
         if (likeablePerson != null) {
-            return false;
+                return likeablePerson;
         }
 
-        return true;
+        return null;
 
     }
 
