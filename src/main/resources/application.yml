@@ -47,3 +47,8 @@ logging:
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
+
+custom:
+  likeablePerson:
+      from:
+        max: 10
