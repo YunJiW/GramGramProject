@@ -6,10 +6,140 @@
 
 <body>
 
-<main layout:fragment="main">
-    <div sec:authorize="isAuthenticated()" th:text="|${#authentication.principal.username}님 환영합니다.|"></div>
-    <div sec:authorize="isAuthenticated()">당신의 회원번호는 [[${@rq.member.id}]]번입니다.</div>
-    <div sec:authorize="isAuthenticated()">당신은 [[${@rq.member.createDate}]]에 가입하셨습니다.</div>
+<main layout:fragment="main" class="flex-grow flex items-center justify-center">
+    <div th:unless="${@rq.member.hasConnectedInstaMember}" th:replace="~{/user/part/needToConnect::base}"></div>
+
+    <div th:if="${@rq.member.hasConnectedInstaMember}" class="max-w-2xl w-full px-4">
+        <h1 class="mb-4">
+            <i class="fa-solid fa-user"></i>
+            내 정보
+        </h1>
+
+        <div class="flex flex-col gap-4">
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-user"></i>
+                        내 정보
+                    </h2>
+
+                    <div class="mt-4">
+                        <div>
+                            <span class="badge badge-primary">가입</span>
+                        </div>
+                        <div class="mt-2">
+                            <i class="fa-regular fa-clock"></i>
+                            <span th:text="${#temporals.format(@rq.member.createDate, 'yy.MM.dd')}"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <div>
+                            <span class="badge badge-primary">이름</span>
+                        </div>
+                        <div class="mt-2">
+                            <i class="fa-solid fa-user"></i>
+                            <span th:text="${@rq.member.nickname}"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <div>
+                            <span class="badge badge-primary">성별</span>
+                        </div>
+                        <div class="mt-2">
+                            <i class="fa-solid fa-person-half-dress"></i>
+                            <span th:text="${@rq.member.instaMember.genderDisplayName}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-person-half-dress"></i> 성별 인기
+                    </h2>
+
+                    <div class="mt-4">
+                        <div>
+                            <span class="badge badge-primary">전체</span>
+                        </div>
+                        <div class="mt-2">
+                            <i class="fa-solid fa-heart"></i>&nbsp;<span th:text="${#numbers.formatInteger(likes, 0, 'COMMA')}"></span>
+                        </div>
+                    </div>
+
+                    <hr class="mt-2">
+
+                    <div class="mt-4">
+                        <div>
+                            <span class="badge badge-primary">여성</span>
+                        </div>
+                        <div class="mt-2">
+                            <i class="fa-solid fa-person-dress"></i>&nbsp;<span th:text="${#numbers.formatInteger(likesByGenderWomen, 0, 'COMMA')}"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <div>
+                            <span class="badge badge-primary">남성</span>
+                        </div>
+                        <div class="mt-2">
+                            <i class="fa-solid fa-person"></i>&nbsp;<span th:text="${#numbers.formatInteger(likesByGenderMen, 0, 'COMMA')}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-list-check"></i> 호감사유별 인기
+                    </h2>
+
+                    <div class="mt-4">
+                        <div>
+                            <span class="badge badge-primary">전체</span>
+                        </div>
+                        <div class="mt-2">
+                            <i class="fa-solid fa-heart"></i>&nbsp;<span th:text="${#numbers.formatInteger(likes, 0, 'COMMA')}"></span>
+                        </div>
+                    </div>
+
+                    <hr class="mt-2">
+
+                    <div class="mt-4">
+                        <div>
+                            <span class="badge badge-primary">외모</span>
+                        </div>
+                        <div class="mt-2">
+                            <i class="fa-solid fa-person-rays"></i>&nbsp;<span th:text="${#numbers.formatInteger(likesByAttractiveTypeCode1, 0, 'COMMA')}"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <div>
+                            <span class="badge badge-primary">성격</span>
+                        </div>
+                        <div class="mt-2">
+                            <i class="fa-regular fa-face-smile"></i>&nbsp;<span th:text="${#numbers.formatInteger(likesByAttractiveTypeCode2, 0, 'COMMA')}"></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <div>
+                            <span class="badge badge-primary">능력</span>
+                        </div>
+                        <div class="mt-2">
+                            <i class="fa-solid fa-people-roof"></i>&nbsp;<span th:text="${#numbers.formatInteger(likesByAttractiveTypeCode3, 0, 'COMMA')}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 </body>
 

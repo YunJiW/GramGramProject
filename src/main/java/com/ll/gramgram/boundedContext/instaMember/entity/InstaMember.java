@@ -48,6 +48,17 @@ public class InstaMember {
     @Builder.Default
     private List<LikeablePerson> toLikeablePeople = new ArrayList<>();
 
+
+    public String getGenderDisplayName() {
+
+        switch (getGender()) {
+            case "W":
+                return "여성";
+            default:
+                return "남성";
+        }
+    }
+
     public void addFromLikeablePerson(LikeablePerson likeablePerson) {
         fromLikeablePeople.add(0, likeablePerson);
     }
