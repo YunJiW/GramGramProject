@@ -58,24 +58,6 @@ public class MemberController {
         if (!rq.getMember().hasConnectedInstaMember()) {
             return rq.historyBack("먼저 본인의 인스타그램 아이디를 입력해주세요.");
         }
-        InstaMember instaMember = rq.getMember().getInstaMember();
-
-        long likesByGenderWomen = instaMember.getToLikeablePeople().stream().filter(likeablePerson -> likeablePerson.getToInstaMember().getGender().equals("W")).count();
-
-        long likesByGenderMen = instaMember.getToLikeablePeople().stream().filter(likeablePerson -> likeablePerson.getToInstaMember().getGender().equals("M")).count();
-
-        long typeCode1 = instaMember.getToLikeablePeople().stream().filter(likeablePerson -> likeablePerson.getAttractiveTypeCode() == 1).count();
-
-        long typeCode2 = instaMember.getToLikeablePeople().stream().filter(likeablePerson -> likeablePerson.getAttractiveTypeCode() == 2).count();
-        long typeCode3 = instaMember.getToLikeablePeople().stream().filter(likeablePerson -> likeablePerson.getAttractiveTypeCode() == 3).count();
-
-
-        model.addAttribute("likes", likesByGenderWomen + likesByGenderMen);
-        model.addAttribute("likesByGenderWomen", likesByGenderWomen);
-        model.addAttribute("likesByGenderMen", likesByGenderMen);
-        model.addAttribute("likesByAttractiveTypeCode1", typeCode1);
-        model.addAttribute("likesByAttractiveTypeCode2", typeCode2);
-        model.addAttribute("likesByAttractiveTypeCode3", typeCode3);
         return "user/member/me";
     }
 }

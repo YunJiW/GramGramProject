@@ -29,7 +29,7 @@ public class LikeablePersonService {
     @Transactional
     public RsData<LikeablePerson> like(Member member, String username, int attractiveTypeCode) {
         InstaMember fromInstaMember = member.getInstaMember();
-        InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username);
+        InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username).getData();
 
         if (member.getInstaMember().getUsername().equals(username)) {
             return RsData.of("F-1", "본인은 호감상대로 저장할 수 없습니다.");
@@ -64,6 +64,9 @@ public class LikeablePersonService {
 
         fromInstaMember.addFromLikeablePerson(likeablePerson);
         toInstaMember.addToLikeablePerson(likeablePerson);
+
+
+        toInstaMember.increaseLikesCount(fromInstaMember.getGender(), attractiveTypeCode);
 
 
         return RsData.of("S-1", "입력하신 인스타 유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
@@ -109,6 +112,9 @@ public class LikeablePersonService {
 
         likeablePerson.getFromInstaMember().removeFromLikeablePerson(likeablePerson);
         likeablePerson.getToInstaMember().removeToLikeablePerson(likeablePerson);
+
+        likeablePerson.getToInstaMember().decreaseLikesCount(likeablePerson.getFromInstaMember().getGender(),
+                likeablePerson.getAttractiveTypeCode());
 
         return RsData.of("S-1", "%s 님을 호감 취소하엿습니다.".formatted(tolikeablePersonUsername));
     }

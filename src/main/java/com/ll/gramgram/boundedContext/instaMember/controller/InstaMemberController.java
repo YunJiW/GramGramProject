@@ -34,6 +34,10 @@ public class InstaMemberController {
     @PostMapping("/connect")
     public String connect(@Valid ConnectForm connectForm) {
         RsData<InstaMember> rsData = instaMemberService.connect(rq.getMember(), connectForm.getUsername(), connectForm.getGender());
+
+        if (rsData.isFail()) {
+            rq.historyBack(rsData);
+        }
         return rq.redirectWithMsg("/likeablePerson/add", "인스타그램 계정이 연결되었습니다.");
     }
 
