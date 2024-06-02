@@ -49,6 +49,7 @@ public class InstaMemberService {
     }
 
 
+    @Transactional
     private RsData<InstaMember> create(String username, String gender) {
         InstaMember instaMember = InstaMember.builder()
                 .username(username)
