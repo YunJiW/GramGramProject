@@ -1,6 +1,8 @@
 package com.ll.gramgram.boundedContext.likeablePerson.service;
 
 import com.ll.gramgram.base.appConfig.AppConfig;
+import com.ll.gramgram.base.event.EventAfterLike;
+import com.ll.gramgram.base.event.EventBeforeCancelLike;
 import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.instaMember.service.InstaMemberService;
@@ -9,6 +11,7 @@ import com.ll.gramgram.boundedContext.likeablePerson.repository.LikeablePersonRe
 import com.ll.gramgram.boundedContext.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +28,8 @@ public class LikeablePersonService {
     private final LikeablePersonRepository likeablePersonRepository;
 
     private final InstaMemberService instaMemberService;
+
+    private final ApplicationEventPublisher publisher;
 
     @Transactional
     public RsData<LikeablePerson> like(Member member, String username, int attractiveTypeCode) {
@@ -65,8 +70,7 @@ public class LikeablePersonService {
         fromInstaMember.addFromLikeablePerson(likeablePerson);
         toInstaMember.addToLikeablePerson(likeablePerson);
 
-
-        toInstaMember.increaseLikesCount(fromInstaMember.getGender(), attractiveTypeCode);
+        publisher.publishEvent(new EventAfterLike(this, likeablePerson));
 
 
         return RsData.of("S-1", "입력하신 인스타 유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
@@ -113,8 +117,7 @@ public class LikeablePersonService {
         likeablePerson.getFromInstaMember().removeFromLikeablePerson(likeablePerson);
         likeablePerson.getToInstaMember().removeToLikeablePerson(likeablePerson);
 
-        likeablePerson.getToInstaMember().decreaseLikesCount(likeablePerson.getFromInstaMember().getGender(),
-                likeablePerson.getAttractiveTypeCode());
+        publisher.publishEvent(new EventBeforeCancelLike(this, likeablePerson));
 
         return RsData.of("S-1", "%s 님을 호감 취소하엿습니다.".formatted(tolikeablePersonUsername));
     }
