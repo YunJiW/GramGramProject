@@ -1,5 +1,6 @@
 package com.ll.gramgram.boundedContext.home.controller;
 
+import com.ll.gramgram.base.Rq;
 import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
 import jakarta.servlet.http.HttpSession;
@@ -16,9 +17,15 @@ import java.util.Enumeration;
 @RequiredArgsConstructor
 public class HomeController {
 
+    private final Rq rq;
+
 
     @GetMapping("/")
     public String showMain() {
+        if(rq.isLogout())
+            return "redirect:/user/member/login";
+
+
         return "home/main";
     }
 
