@@ -63,6 +63,7 @@ public class LikeablePersonService {
                 .toInstaMember(toInstaMember)
                 .toInstaMemberUsername(toInstaMember.getUsername())
                 .attractiveTypeCode(attractiveTypeCode)
+                .modifyUnlockDate(AppConfig.genLikeablePersonModifyUnlockDate())
                 .build();
 
         likeablePersonRepository.save(likeablePerson);
@@ -139,6 +140,7 @@ public class LikeablePersonService {
         }
 
         likeablePerson.modifyAttractiveTypCode(attractiveTypeCode);
+
 
 
         return RsData.of("S-2", "호감 사유 수정이 완료되었습니다.");

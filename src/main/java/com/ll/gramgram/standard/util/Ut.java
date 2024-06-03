@@ -2,8 +2,36 @@ package com.ll.gramgram.standard.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class Ut {
+
+    public static class time {
+        public static String diffFormatHuman(LocalDateTime time1, LocalDateTime time2) {
+
+            String suffix = time1.isAfter(time2) ? "전" : "후";
+
+            long diff = ChronoUnit.SECONDS.between(time1, time2);
+
+            long diffSeconds = diff % 60;
+
+            long diffMinutes = diff / (60) % 60;
+
+            long diffHours = diff / (60 * 60) % 24;
+
+            long diffDays = diff / (60 * 60 * 24);
+
+            StringBuilder sb = new StringBuilder();
+
+            if (diffDays > 0) sb.append(diffDays).append("일 ");
+            if (diffHours > 0) sb.append(diffHours).append("시간 ");
+            if (diffMinutes > 0) sb.append(diffMinutes).append("분 ");
+            if (diffSeconds > 0) sb.append(diffSeconds).append("초 ");
+
+            return sb.append(suffix).toString();
+        }
+    }
 
     public static class url {
         public static String encode(String str) {

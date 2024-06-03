@@ -1,6 +1,8 @@
 package com.ll.gramgram.boundedContext.likeablePerson.entity;
 
+import com.ll.gramgram.base.appConfig.AppConfig;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
+import com.ll.gramgram.standard.util.Ut;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -42,6 +44,8 @@ public class LikeablePerson {
 
     private int attractiveTypeCode;
 
+    private LocalDateTime modifyUnlockDate;
+
     public String getAttractiveTypeDisplayName() {
         return switch (attractiveTypeCode) {
             case 1 -> "외모";
@@ -52,6 +56,7 @@ public class LikeablePerson {
 
     public void modifyAttractiveTypCode(int attractiveTypeCode) {
         this.attractiveTypeCode = attractiveTypeCode;
+        this.modifyUnlockDate = AppConfig.genLikeablePersonModifyUnlockDate();
     }
 
     public String getAttractiveTypeDisplayNameWithIcon() {
@@ -60,5 +65,13 @@ public class LikeablePerson {
             case 2 -> "<i class=\"fa-regular fa-face-smile\"></i>";
             default -> "<i class=\"fa-solid fa-people-roof\"></i>";
         } + "&nbsp;" + getAttractiveTypeDisplayName();
+    }
+
+    public boolean isModifyUnlocked() {
+        return modifyUnlockDate.isBefore(LocalDateTime.now());
+    }
+
+    public String getModifyUnlockDateRemainStrHuman() {
+        return Ut.time.diffFormatHuman(LocalDateTime.now(), modifyUnlockDate);
     }
 }

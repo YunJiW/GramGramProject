@@ -39,12 +39,22 @@
                             </div>
 
                             <div class="card-actions justify-end">
-                                <a th:href="@{|modify/${likeablePerson.id}|}" class="btn btn-sm btn-outline">호감사유 변경</a>
-                                <a class="btn btn-sm btn-outline" href="javascript:;"
+                                <a th:href="@{|modify/${likeablePerson.id}|}"
+                                   class="btn btn-sm btn-outline"
+                                th:classappend="${!likeablePerson.modifyUnlocked ? 'btn-disabled' : ''}">호감사유 변경</a>
+                                <a class="btn btn-sm btn-outline"
+                                   th:classappend="${!likeablePerson.modifyUnlocked ? 'btn-disabled' : ''}"
+                                   href="javascript:"
                                    onclick="if ( confirm('정말로 취소하시겠습니까?') ) $(this).next().submit();">호감취소</a>
                                 <form hidden th:action="@{|/likeablePerson/delete/${likeablePerson.id}|}" method="POST">
                                     <input type="hidden" name="_method" value="delete">
                                 </form>
+                            </div>
+                            <div th:unless="${likeablePerson.modifyUnlocked}" class="text-center text-gray-500 text-sm mt-2">
+                                <span class="text-red-400">호감사유 변경</span>과 <span
+                                    class="text-red-400">호감취소</span>는 <span
+                                    class="badge badge-primary"
+                                    th:text="${likeablePerson.modifyUnlockDateRemainStrHuman}"></span>에 가능합니다.
                             </div>
                         </div>
                     </div>
