@@ -50,5 +50,6 @@ jasypt:
 
 custom:
   likeablePerson:
+      modifyCoolTime: '#{60*60*3}'
       from:
         max: 10
