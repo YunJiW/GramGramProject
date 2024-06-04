@@ -52,6 +52,14 @@ public class NotificationService {
         return RsData.of("S-1", "알림 메시지 생성 완료", noti);
     }
 
-    public void makeAsRead(List<Notification> notifications) {
+    public List<Notification> findByToInstaMember_username(String username) {
+        return notificationRepository.findByToInstaMember_username(username);
+    }
+
+    public RsData makeAsRead(List<Notification> notifications) {
+        notifications.stream().filter(notification -> !notification.isRead())
+                .forEach(Notification::markAsRead);
+
+        return RsData.of("S-1", "읽음 처리 완료");
     }
 }
