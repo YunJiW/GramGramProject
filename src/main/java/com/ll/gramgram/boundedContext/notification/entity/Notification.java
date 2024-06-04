@@ -48,4 +48,12 @@ public class Notification {
     private String newGender;
 
     private int newAttractiveTypeCode;
+
+    public boolean isRead() {
+        return readDate != null;
+    }
+
+    public void markAsRead(){
+        readDate = LocalDateTime.now();
+    }
 }
