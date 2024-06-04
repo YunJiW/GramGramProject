@@ -2,10 +2,7 @@ package com.ll.gramgram.boundedContext.notification.entity;
 
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -18,6 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 @ToString(callSuper = true)
+@AllArgsConstructor
 public class Notification {
 
 
@@ -35,7 +33,7 @@ public class Notification {
 
     @ManyToOne
     @ToString.Exclude
-    private InstaMember instaMember;
+    private InstaMember toInstaMember;
 
     @ManyToOne
     @ToString.Exclude

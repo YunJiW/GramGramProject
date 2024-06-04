@@ -23,7 +23,7 @@ public class HomeController {
     @GetMapping("/")
     public String showMain() {
         if(rq.isLogout())
-            return "redirect:/user/member/login";
+            return "redirect:/member/login";
 
 
         return "home/main";
