@@ -56,6 +56,7 @@ public class NotificationService {
         return notificationRepository.findByToInstaMember_username(username);
     }
 
+    @Transactional
     public RsData makeAsRead(List<Notification> notifications) {
         notifications.stream().filter(notification -> !notification.isRead())
                 .forEach(Notification::markAsRead);

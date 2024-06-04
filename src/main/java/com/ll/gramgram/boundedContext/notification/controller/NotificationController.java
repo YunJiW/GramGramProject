@@ -28,7 +28,7 @@ public class NotificationController {
     public String showList(Model model) {
 
         if (!rq.getMember().hasConnectedInstaMember()) {
-            return rq.redirectWithMsg("/notification/list", "인스타 인증을 해야 알림을 볼수 있습니다.");
+            return rq.redirectWithMsg("/instaMember/connect", "인스타 인증을 해야 알림을 볼수 있습니다.");
         }
 
         List<Notification> notifications = notificationService.findByToInstaMember(rq.getMember().getInstaMember());
