@@ -3,6 +3,7 @@ package com.ll.gramgram.base;
 import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
+import com.ll.gramgram.boundedContext.notification.service.NotificationService;
 import com.ll.gramgram.standard.util.Ut;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,12 +26,15 @@ public class Rq {
     private final HttpServletResponse resp;
     private final HttpSession session;
 
+    private final NotificationService notificationService;
+
     private final User user;
 
     private Member member = null;
 
-    public Rq(MemberService memberService, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
+    public Rq(MemberService memberService, NotificationService notificationService, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
         this.memberService = memberService;
+        this.notificationService = notificationService;
         this.req = req;
         this.resp = resp;
         this.session = session;
@@ -91,5 +95,18 @@ public class Rq {
     private String msgWithTtl(String msg) {
 
         return Ut.url.encode(msg) + ";ttl=" + new Date().getTime();
+    }
+
+    public boolean hasUnreadNotifications() {
+        if (isLogout()) return false;
+
+        Member actor = getMember();
+
+        if(!actor.hasConnectedInstaMember()){
+            return false;
+        }
+
+
+        return notificationService.countUnreadNotificationsByToInstaMember(getMember().getInstaMember());
     }
 }
