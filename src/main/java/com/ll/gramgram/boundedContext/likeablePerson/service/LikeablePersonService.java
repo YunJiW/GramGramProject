@@ -111,6 +111,11 @@ public class LikeablePersonService {
             log.info("권한이 없습니다.");
             return RsData.of("F-1", "권한이 없습니다.");
         }
+
+        if (!likeablePerson.isModifyUnlocked()) {
+            log.info("시간이 안되서 수정 불가능");
+            return RsData.of("F-3", "아직 취소할수 없습니다. %s에 취소 가능합니다.".formatted(likeablePerson.getModifyUnlockDateRemainStrHuman()));
+        }
         String tolikeablePersonUsername = likeablePerson.getToInstaMember().getUsername();
 
         likeablePersonRepository.delete(likeablePerson);
@@ -142,7 +147,6 @@ public class LikeablePersonService {
         likeablePerson.modifyAttractiveTypCode(attractiveTypeCode);
 
 
-
         return RsData.of("S-2", "호감 사유 수정이 완료되었습니다.");
 
 
@@ -158,6 +162,11 @@ public class LikeablePersonService {
         if (!Objects.equals(fromInstaMember.getId(), likeablePerson.getFromInstaMember().getId())) {
             log.info("권한이 없습니다.");
             return RsData.of("F-1", "권한이 없습니다.");
+        }
+
+        if (!likeablePerson.isModifyUnlocked()) {
+            log.info("시간이 안되서 수정 불가능");
+            return RsData.of("F-3", "아직 취소할수 없습니다. %s에 취소 가능합니다.".formatted(likeablePerson.getModifyUnlockDateRemainStrHuman()));
         }
 
 

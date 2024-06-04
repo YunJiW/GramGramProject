@@ -82,7 +82,9 @@ public class LikeablePersonController {
 
         RsData modifyLikeData = likeablePersonService.canModifyLike(rq.getMember(), likeablePerson);
 
+     
         if (modifyLikeData.isFail()) {
+            log.info("수정 불가능.");
             rq.historyBack(modifyLikeData.getMsg());
         }
 
